@@ -1,6 +1,6 @@
 # Course Notes
 
-A small Django application for keeping notes for your courses. Each course has a notebook, and a notebook holds notes. A note can have a file attached. There are no user accounts.
+A simple course notes demo application for django. Link to production: https://coursenotes.carleton.university
 
 ## Run it on your own computer
 
