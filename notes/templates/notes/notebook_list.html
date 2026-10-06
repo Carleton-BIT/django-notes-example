@@ -1,0 +1,24 @@
+{% extends 'notes/base.html' %}
+
+{% block content %}
+<div class="heading">
+    <h1>Notebooks</h1>
+    <a class="button" href="{% url 'notebook_create' %}">New notebook</a>
+</div>
+
+{% if notebooks %}
+<ul class="cards">
+    {% for notebook in notebooks %}
+    <li>
+        <a href="{{ notebook.get_absolute_url }}">
+            <span class="code">{{ notebook.course_code }}</span>
+            <strong>{{ notebook.title }}</strong>
+            <span class="muted">{{ notebook.note_count }} note{{ notebook.note_count|pluralize }}</span>
+        </a>
+    </li>
+    {% endfor %}
+</ul>
+{% else %}
+<p class="muted">No notebooks yet. Create one for each of your courses.</p>
+{% endif %}
+{% endblock %}

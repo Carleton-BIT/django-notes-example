@@ -1,0 +1,17 @@
+{% extends 'notes/base.html' %}
+
+{% block title %}{% if note %}Edit note{% else %}Add note{% endif %}{% endblock %}
+
+{% block content %}
+<p><a href="{{ notebook.get_absolute_url }}">&larr; {{ notebook }}</a></p>
+<h1>{% if note %}Edit note{% else %}Add note{% endif %}</h1>
+<form method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+    {{ form.as_div }}
+    <p class="muted">Attach an image, PDF, document or zip file, up to 10 MB.</p>
+    <div class="actions">
+        <button type="submit">Save note</button>
+        <a href="{% if note %}{{ note.get_absolute_url }}{% else %}{{ notebook.get_absolute_url }}{% endif %}">Cancel</a>
+    </div>
+</form>
+{% endblock %}

@@ -1,0 +1,15 @@
+{% extends 'notes/base.html' %}
+
+{% block title %}New notebook{% endblock %}
+
+{% block content %}
+<h1>New notebook</h1>
+<form method="post">
+    {% csrf_token %}
+    {{ form.as_div }}
+    <div class="actions">
+        <button type="submit">Create notebook</button>
+        <a href="{% url 'notebook_list' %}">Cancel</a>
+    </div>
+</form>
+{% endblock %}

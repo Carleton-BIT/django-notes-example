@@ -1,0 +1,30 @@
+{% extends 'notes/base.html' %}
+
+{% block title %}{{ note.title }}{% endblock %}
+
+{% block content %}
+<p><a href="{{ note.notebook.get_absolute_url }}">&larr; {{ note.notebook }}</a></p>
+<div class="heading">
+    <h1>{{ note.title }}</h1>
+    <a class="button" href="{% url 'note_update' note.pk %}">Edit</a>
+</div>
+<p class="muted">Updated {{ note.updated|date:"M j, Y, g:i a" }}</p>
+
+{% if note.body %}<div class="body">{{ note.body|linebreaks }}</div>{% endif %}
+
+{% if note.attachment %}
+<div class="attachment">
+    {% if note.attachment_is_image %}
+    <img src="{{ note.attachment.url }}" alt="{{ note.attachment_name }}">
+    {% endif %}
+    <p><a href="{{ note.attachment.url }}">{{ note.attachment_name }}</a>
+        <span class="muted">{{ note.attachment.size|filesizeformat }}</span></p>
+</div>
+{% endif %}
+
+<form class="danger" method="post" action="{% url 'note_delete' note.pk %}"
+      onsubmit="return confirm('Delete this note?')">
+    {% csrf_token %}
+    <button type="submit" class="link">Delete note</button>
+</form>
+{% endblock %}

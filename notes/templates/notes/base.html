@@ -1,0 +1,19 @@
+{% load static django_htmx %}
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>{% block title %}Course Notes{% endblock %}</title>
+    <link rel="stylesheet" href="{% static 'notes/style.css' %}">
+    {% htmx_script %}
+</head>
+<body hx-headers='{"X-CSRFToken": "{{ csrf_token }}"}'>
+    <header>
+        <a class="brand" href="{% url 'notebook_list' %}">Course Notes</a>
+    </header>
+    <main>
+        {% block content %}{% endblock %}
+    </main>
+</body>
+</html>

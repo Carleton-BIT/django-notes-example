@@ -1,0 +1,15 @@
+{% if notes %}
+<ul class="notes">
+    {% for note in notes %}
+    <li>
+        <a href="{{ note.get_absolute_url }}">{{ note.title }}</a>
+        {% if note.attachment %}<span class="tag">file</span>{% endif %}
+        <span class="muted">{{ note.updated|date:"M j, Y" }}</span>
+    </li>
+    {% endfor %}
+</ul>
+{% elif query %}
+<p class="muted">No notes match "{{ query }}".</p>
+{% else %}
+<p class="muted">No notes in this notebook yet.</p>
+{% endif %}

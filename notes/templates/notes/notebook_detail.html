@@ -1,0 +1,27 @@
+{% extends 'notes/base.html' %}
+
+{% block title %}{{ notebook.course_code }} notes{% endblock %}
+
+{% block content %}
+<p><a href="{% url 'notebook_list' %}">&larr; All notebooks</a></p>
+<div class="heading">
+    <h1><span class="code">{{ notebook.course_code }}</span> {{ notebook.title }}</h1>
+    <a class="button" href="{% url 'note_create' notebook.pk %}">Add note</a>
+</div>
+{% if notebook.description %}<p>{{ notebook.description }}</p>{% endif %}
+
+<input type="search" name="q" value="{{ query }}" placeholder="Search this notebook"
+       hx-get="{{ notebook.get_absolute_url }}"
+       hx-trigger="input changed delay:300ms, search"
+       hx-target="#note-list">
+
+<div id="note-list">
+    {% include 'notes/_note_list.html' %}
+</div>
+
+<form class="danger" method="post" action="{% url 'notebook_delete' notebook.pk %}"
+      onsubmit="return confirm('Delete this notebook and all of its notes?')">
+    {% csrf_token %}
+    <button type="submit" class="link">Delete notebook</button>
+</form>
+{% endblock %}
