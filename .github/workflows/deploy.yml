@@ -1,0 +1,29 @@
+name: Deploy to production
+on:
+  push:
+    branches: [main]
+    paths-ignore: ["**.md", "docs/**"]
+  workflow_dispatch:          # adds a "Run workflow" button on the Actions tab for manual redeployment attempts
+
+concurrency:                  # only allows one deployment at a time
+  group: production-deploy
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    environment: production
+    timeout-minutes: 5        # cuts off a deployment if it takes more than 5 minutes
+    steps:
+      - uses: actions/checkout@v4
+      - name: Send the code to the production server and run deploy.sh
+        env:
+          DEPLOY_KEY: ${{ secrets.DEPLOY_KEY }}
+          KNOWN_HOSTS: ${{ secrets.KNOWN_HOSTS }}
+        run: |
+          install -m 700 -d ~/.ssh
+          printf '%s\n' "$DEPLOY_KEY" > ~/.ssh/deploy && chmod 600 ~/.ssh/deploy
+          printf '%s\n' "$KNOWN_HOSTS" > ~/.ssh/known_hosts
+          git archive --format=tar HEAD |
+            ssh -i ~/.ssh/deploy -p 22502 student@ssh.projects.carleton.university \
+              'set -e; dir=$(mktemp -d); trap "rm -rf $dir" EXIT; tar -x -C "$dir"; bash "$dir/deploy.sh"'
