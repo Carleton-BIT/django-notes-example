@@ -57,5 +57,12 @@ class NoteTests(TestCase):
 
     def test_deleting_a_notebook_deletes_its_notes(self):
         Note.objects.create(notebook=self.notebook, title='Gone')
-        self.client.post(reverse('notebook_delete', args=[self.notebook.pk]))
+        response = self.client.delete(self.notebook.get_absolute_url())
+        self.assertEqual(response.headers['HX-Redirect'], reverse('notebook_list'))
+        self.assertFalse(Note.objects.filter(title='Gone').exists())
+
+    def test_deleting_a_note_sends_the_browser_back_to_its_notebook(self):
+        note = Note.objects.create(notebook=self.notebook, title='Gone')
+        response = self.client.delete(note.get_absolute_url())
+        self.assertEqual(response.headers['HX-Redirect'], self.notebook.get_absolute_url())
         self.assertFalse(Note.objects.filter(title='Gone').exists())

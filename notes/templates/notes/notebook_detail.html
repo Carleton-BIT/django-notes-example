@@ -19,9 +19,9 @@
     {% include 'notes/_note_list.html' %}
 </div>
 
-<form class="danger" method="post" action="{% url 'notebook_delete' notebook.pk %}"
-      onsubmit="return confirm('Delete this notebook and all of its notes?')">
-    {% csrf_token %}
-    <button type="submit" class="link">Delete notebook</button>
-</form>
+<p class="danger">
+    <button type="button" class="link"
+            hx-delete="{{ notebook.get_absolute_url }}"
+            hx-confirm="Delete this notebook and all of its notes?">Delete notebook</button>
+</p>
 {% endblock %}
