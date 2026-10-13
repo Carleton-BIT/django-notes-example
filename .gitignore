@@ -16,3 +16,9 @@ db.sqlite3-journal
 # IDE
 .idea/
 .vscode/
+
+# Tests
+.pytest_cache/
+test-results/
+.coverage
+htmlcov/

@@ -10,7 +10,11 @@ concurrency:                  # only allows one deployment at a time
   cancel-in-progress: false
 
 jobs:
+  test:
+    uses: ./.github/workflows/test.yml
+
   deploy:
+    needs: test               # only deploys if every test passed
     runs-on: ubuntu-latest
     environment: production
     timeout-minutes: 5        # cuts off a deployment if it takes more than 5 minutes

@@ -15,7 +15,14 @@ python manage.py runserver
 
 Then open http://localhost:8000. The `migrate` command creates the database and loads two sample notebooks.
 
-Run the tests with `python manage.py test`.
+## Testing
+
+To run automated tests:
+
+- Activate the virtual environment with `source .venv/bin/activate`
+- Install test dependencies with `pip install -r requirements-dev.txt`
+- Install the test browser with `playwright install chromium`
+- Run tests with `pytest`
 
 ## Uploaded files
 
