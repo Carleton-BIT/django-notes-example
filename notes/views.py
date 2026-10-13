@@ -35,17 +35,6 @@ def notebook_detail(request, pk):
     return render(request, 'notes/notebook_detail.html', context)
 
 
-def note_create(request, notebook_pk):
-    notebook = get_object_or_404(Notebook, pk=notebook_pk)
-    form = NoteForm(request.POST or None, request.FILES or None)
-    if form.is_valid():
-        note = form.save(commit=False)
-        note.notebook = notebook
-        note.save()
-        return redirect(note)
-    return render(request, 'notes/note_form.html', {'form': form, 'notebook': notebook})
-
-
 def note_detail(request, pk):
     note = get_object_or_404(Note.objects.select_related('notebook'), pk=pk)
     if request.method == 'DELETE':
